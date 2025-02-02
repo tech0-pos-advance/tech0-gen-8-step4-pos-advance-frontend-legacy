@@ -26,12 +26,13 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-      - name: Copy artifact for deployment job
+      - name: Prepare artifact for deployment
         run: |
-          mkdir -p deploy/.next
-          if [ -d ".next/standalone/" ]; then cp -r ./.next/standalone/. ./deploy; fi
-          if [ -d "./public" ]; then cp -r ./public ./deploy; fi
-          if [ -d ".next/static/" ]; then cp -r ./.next/static/. ./deploy/.next/static; fi
+          mkdir -p deploy
+          cp -r .next/standalone/. deploy/
+          cp -r public deploy/
+          cp package.json deploy/
+          cp package-lock.json deploy/
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./deploy
