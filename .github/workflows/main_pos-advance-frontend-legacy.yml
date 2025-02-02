@@ -65,4 +65,4 @@ jobs:
           app-name: "pos-advance-frontend-legacy"
           slot-name: "Production"
           package: ./deploy
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8ADFB8C197FA42B3B894FD105503F99A }}
