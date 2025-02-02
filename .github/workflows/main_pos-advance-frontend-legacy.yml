@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - pos-advance-frontend-legacy
 
 on:
@@ -13,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -31,13 +28,13 @@ jobs:
 
       - name: Copy artifact for deployment job
         run: |
-          mkdir -p deploy/.next
-          if [ -d ".next/standalone/" ]; then cp -r ./.next/standalone/. ./deploy; fi
-          if [ -d "./public" ]; then cp -r ./public ./deploy; fi
-          if [ -d ".next/static/" ]; then cp -r ./.next/static/. ./deploy/.next/static; fi
+          mkdir -p deploy
+          cp -r .next/standalone/. deploy/
+          cp -r public deploy/ || true
+          cp -r .next/static deploy/.next/static || true
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./deploy -r
+        run: zip -r release.zip deploy
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -59,7 +56,10 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: |
+          unzip release.zip
+          cd deploy
+          npm install --production
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: "pos-advance-frontend-legacy"
           slot-name: "Production"
-          package: ./deploy
+          package: ./deploy/.next/standalone
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8ADFB8C197FA42B3B894FD105503F99A }}
