@@ -14,7 +14,7 @@ export default function Page() {
           <BookingForm />
         </div>
         <div className="bg-white shadow-sm rounded-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">予約一覧</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">設備一覧</h2>
           <BookingList />
         </div>
       </main>
